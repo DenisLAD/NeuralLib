@@ -18,8 +18,9 @@ public class App {
     public static void main(String[] args) {
         Network n = new Network(2);
 //        n.addLayer(new Layer(8, ActivationFunction.LINEAR));
-        n.addLayer(new Layer(4, ActivationFunction.TANH));
-        n.addLayer(new Layer(1, ActivationFunction.SIGMOID));
+//        n.addLayer(new Layer(4, ActivationFunction.SIGMOID));
+        n.addLayer(new Layer(40, ActivationFunction.SIGMOID));
+        n.addLayer(new Layer(1, ActivationFunction.RELU));
         n.build();
 
         double[][] train = new double[][]{
@@ -44,12 +45,12 @@ public class App {
                 err += n.train(train[i], ideal[i], 0.1);
             }
 
-            if (lr % 100 == 0) {
+            if (lr % 1000 == 0) {
                 System.out.println(String.format("%.8f", err));
-                for (int i = 0; i < train.length; i++) {
-                    double e = n.evaluate(train[i])[0];
-                    System.out.println(String.format("%.4f %.4f", e, ideal[i][0]));
-                }
+//                for (int i = 0; i < train.length; i++) {
+//                    double e = n.evaluate(train[i])[0];
+//                    System.out.println(String.format("%.4f %.4f", e, ideal[i][0]));
+//                }
             }
 
             lr++;
