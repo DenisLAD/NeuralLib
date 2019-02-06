@@ -66,7 +66,7 @@ public class Network {
     private void initWeights(double[][] w) {
         for (double[] weight : w) {
             for (int i = 0; i < weight.length; i++) {
-                weight[i] = Math.random() / 1000.0;
+                weight[i] = (Math.random() - 0.5) / 1000.0;
             }
         }
     }
@@ -121,6 +121,19 @@ public class Network {
 
     }
 
+    public double train(TrainingSet set, double learRate, int iterations) {
+        double error = 0;
+        for (int i = 0; i < iterations; i++) {
+            error = 0;
+            for (TrainingRow row : set.getTrainingData()) {
+                error += train(row.getInput(), row.getOutput(), learRate);
+            }
+            error /= (double) set.getTrainingData().size();
+        }
+
+        return error;
+    }
+
     private void forward(double[] input, double[] output, double[][] weights, ActivationFunction func) {
         int i = input.length;
         int t = weights.length;
@@ -137,7 +150,8 @@ public class Network {
     private void findOutError(double[] error, double[] output, double[] ideal) {
         int s = ideal.length;
         for (int i = 0; i < s; i++) {
-            error[i] = (ideal[i] - output[i]) * output[i] * (1 - output[i]);
+            double delta = (ideal[i] - output[i]);
+            error[i] = delta * output[i] * (1 - output[i]);
         }
     }
 
@@ -165,4 +179,5 @@ public class Network {
             }
         }
     }
+
 }
