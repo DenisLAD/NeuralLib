@@ -1,2 +1,2 @@
 # NeuralLib
-Simple neural network
+Simple feedforward neural network
