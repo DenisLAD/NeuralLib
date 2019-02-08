@@ -101,6 +101,7 @@ public class Network {
             double[] in = layerDatas.get(i - 1);
 
             findError(in, ie, oe, w);
+
         }
 
         for (int i = idx; i > 0; i--) {
@@ -143,8 +144,10 @@ public class Network {
             for (int x = 0; x < i; x++) {
                 output[y] = output[y] + input[x] * weightRow[x];
             }
+//            output[y] = output[y] + weightRow[weightRow.length - 1];
         }
-        func.activate(output);
+
+        func.activateCheck(output);
     }
 
     private void findOutError(double[] error, double[] output, double[] ideal) {
@@ -162,9 +165,9 @@ public class Network {
         for (int x = 0; x < i; x++) {
             ie[x] = 0;
             for (int y = 0; y < t; y++) {
-                ie[x] = ie[x] + w[y][x] * oe[y];
+                ie[x] = (ie[x] + w[y][x] * oe[y]);
             }
-            ie[x] = ie[x] * in[x] * (1.0 - in[x]);
+            ie[x] = ie[x] * in[x] * (1 - in[x]);
         }
 
     }

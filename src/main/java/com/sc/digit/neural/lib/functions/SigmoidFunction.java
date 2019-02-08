@@ -11,7 +11,7 @@ import com.sc.digit.neural.lib.ActivationFunction;
  *
  * @author lucifer
  */
-public class SigmoidFunction implements ActivationFunction {
+public class SigmoidFunction extends ActivationFunction {
 
     @Override
     public void activate(double[] output) {

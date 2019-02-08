@@ -21,7 +21,7 @@ public class ImageComponent extends JComponent {
 
     public ImageComponent(int w, int h) {
         image = new BufferedImage(w * 4, h * 4, BufferedImage.TYPE_INT_RGB);
-        set = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
+        set = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
     }
 
     @Override

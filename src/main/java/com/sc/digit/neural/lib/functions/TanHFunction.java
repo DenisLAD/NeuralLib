@@ -11,7 +11,7 @@ import com.sc.digit.neural.lib.ActivationFunction;
  *
  * @author lucifer
  */
-public class TanHFunction implements ActivationFunction {
+public class TanHFunction extends ActivationFunction {
 
     @Override
     public void activate(double[] output) {

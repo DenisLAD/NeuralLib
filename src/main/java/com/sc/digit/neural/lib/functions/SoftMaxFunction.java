@@ -11,7 +11,7 @@ import com.sc.digit.neural.lib.ActivationFunction;
  *
  * @author lucifer
  */
-public class SoftMaxFunction implements ActivationFunction {
+public class SoftMaxFunction extends ActivationFunction {
 
     @Override
     public void activate(double[] output) {

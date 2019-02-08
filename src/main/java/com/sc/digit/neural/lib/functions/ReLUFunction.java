@@ -11,13 +11,13 @@ import com.sc.digit.neural.lib.ActivationFunction;
  *
  * @author lucifer
  */
-public class ReLUFunction implements ActivationFunction {
+public class ReLUFunction extends ActivationFunction {
 
     @Override
     public void activate(double[] output) {
         int l = output.length;
         for (int i = 0; i < l; i++) {
-            output[i] = Math.max(0.001, output[i]);
+            output[i] = Math.max(0.00000000001, output[i]);
         }
     }
 

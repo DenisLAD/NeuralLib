@@ -40,10 +40,19 @@ public class DataUtils {
                 int r = (col >> 16) & 0xff;
                 int g = (col >> 16) & 0xff;
                 int b = col & 0xff;
+                
+                r = r < 64 ? 0 : r;
+                g = g < 64 ? 0 : g;
+                b = b < 64 ? 0 : b;
+                
+                r = r > 200 ? 255 : r;
+                g = g > 200 ? 255 : g;
+                b = b > 200 ? 255 : b;
 
                 input[idx] = r / 255.0;
                 input[idx + step] = g / 255.0;
                 input[idx + step * 2] = b / 255.0;
+                idx++;
             }
         }
 

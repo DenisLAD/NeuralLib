@@ -16,7 +16,7 @@ import com.sc.digit.neural.lib.functions.TanHFunction;
  *
  * @author lucifer
  */
-public interface ActivationFunction {
+public abstract class ActivationFunction {
 
     public final static ActivationFunction SIGMOID = new SigmoidFunction();
     public final static ActivationFunction RELU = new ReLUFunction();
@@ -25,6 +25,13 @@ public interface ActivationFunction {
     public final static ActivationFunction STEP = new StepFunction();
     public final static ActivationFunction SOFTMAX = new SoftMaxFunction();
 
-    public void activate(double[] output);
+    public abstract void activate(double[] output);
+
+    public void activateCheck(double[] output) {
+        activate(output);
+//        for (int i = 0; i < output.length; i++) {
+//            output[i] = output[i] < 0.01 ? 0.01 : output[i] > 1.0 ? 1.0 : output[i];
+//        }
+    }
 
 }
