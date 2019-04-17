@@ -17,7 +17,7 @@ public class ReLUFunction implements ActivationFunction {
     public void activate(double[] output) {
         int l = output.length;
         for (int i = 0; i < l; i++) {
-            output[i] = output[i] <= 0 ? 0 : output[i];
+            output[i] = output[i] <= 0.0001 ? 0.0001 :  output[i] > 1 ? 1 : output[i];
         }
     }
 

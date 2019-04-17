@@ -24,6 +24,10 @@ public class Network {
     public Network(int inputSize) {
         this.inputSize = inputSize;
     }
+    
+//    public Network clone() {
+//        
+//    }
 
     public void addLayer(Layer layer) {
         layers.add(layer);
@@ -137,8 +141,10 @@ public class Network {
     private void findOutError(double[] error, double[] output, double[] ideal) {
         int s = ideal.length;
         for (int i = 0; i < s; i++) {
-            error[i] = (ideal[i] - output[i]) * output[i] * (1 - output[i]);
+            double delta = ideal[i] - output[i];
+            error[i] = delta * output[i] * (1 - output[i]);
         }
+
     }
 
     private void findError(double[] in, double[] ie, double[] oe, double[][] w) {
@@ -152,7 +158,6 @@ public class Network {
             }
             ie[x] = ie[x] * in[x] * (1.0 - in[x]);
         }
-
     }
 
     private void backward(double[] in, double[] oe, double[][] w, double learningRate) {
@@ -164,5 +169,17 @@ public class Network {
                 weightRow[x] = weightRow[x] + learningRate * oe[y] * in[x];
             }
         }
+    }
+
+    public double train(TrainingSet set, double learnRate, int iteratonCount) {
+        double error = 0;
+        for (int i = 0; i < iteratonCount; i++) {
+            error = 0;
+            for (TrainingRow row : set.getTrainingData()) {
+                error += train(row.getInput(), row.getOutput(), learnRate);
+            }
+//            error /= (double) (set.getTrainingData().size());
+        }
+        return error;
     }
 }
