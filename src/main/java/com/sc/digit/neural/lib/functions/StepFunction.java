@@ -11,13 +11,13 @@ import com.sc.digit.neural.lib.ActivationFunction;
  *
  * @author lucifer
  */
-public class SigmoidFunction extends ActivationFunction {
+public class StepFunction extends ActivationFunction {
 
     @Override
     public void activate(double[] output) {
         int l = output.length;
         for (int i = 0; i < l; i++) {
-            output[i] = 1.0 / (1.0 + Math.exp(-1 * output[i]));
+            output[i] = output[i] <= 0 ? 0 : 1;
         }
     }
 

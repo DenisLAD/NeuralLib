@@ -11,7 +11,7 @@ import com.sc.digit.neural.lib.ActivationFunction;
  *
  * @author lucifer
  */
-public class ReLUFunction implements ActivationFunction {
+public class ReLUFunction extends ActivationFunction {
 
     @Override
     public void activate(double[] output) {

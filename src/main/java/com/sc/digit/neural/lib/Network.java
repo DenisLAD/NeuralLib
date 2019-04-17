@@ -70,7 +70,7 @@ public class Network {
     private void initWeights(double[][] w) {
         for (double[] weight : w) {
             for (int i = 0; i < weight.length; i++) {
-                weight[i] = Math.random() / 1000.0;
+                weight[i] = (Math.random() - 0.5) / 1000.0;
             }
         }
     }
@@ -105,6 +105,7 @@ public class Network {
             double[] in = layerDatas.get(i - 1);
 
             findError(in, ie, oe, w);
+
         }
 
         for (int i = idx; i > 0; i--) {
@@ -125,6 +126,19 @@ public class Network {
 
     }
 
+    public double train(TrainingSet set, double learRate, int iterations) {
+        double error = 0;
+        for (int i = 0; i < iterations; i++) {
+            error = 0;
+            for (TrainingRow row : set.getTrainingData()) {
+                error += train(row.getInput(), row.getOutput(), learRate);
+            }
+//            error /= (double) set.getTrainingData().size();
+        }
+
+        return error;
+    }
+    
     private void forward(double[] input, double[] output, double[][] weights, ActivationFunction func) {
         int i = input.length;
         int t = weights.length;
@@ -134,8 +148,10 @@ public class Network {
             for (int x = 0; x < i; x++) {
                 output[y] = output[y] + input[x] * weightRow[x];
             }
+//            output[y] = output[y] + weightRow[weightRow.length - 1];
         }
-        func.activate(output);
+
+        func.activateCheck(output);
     }
 
     private void findOutError(double[] error, double[] output, double[] ideal) {
@@ -154,9 +170,9 @@ public class Network {
         for (int x = 0; x < i; x++) {
             ie[x] = 0;
             for (int y = 0; y < t; y++) {
-                ie[x] = ie[x] + w[y][x] * oe[y];
+                ie[x] = (ie[x] + w[y][x] * oe[y]);
             }
-            ie[x] = ie[x] * in[x] * (1.0 - in[x]);
+            ie[x] = ie[x] * in[x] * (1 - in[x]);
         }
     }
 
@@ -171,15 +187,4 @@ public class Network {
         }
     }
 
-    public double train(TrainingSet set, double learnRate, int iteratonCount) {
-        double error = 0;
-        for (int i = 0; i < iteratonCount; i++) {
-            error = 0;
-            for (TrainingRow row : set.getTrainingData()) {
-                error += train(row.getInput(), row.getOutput(), learnRate);
-            }
-//            error /= (double) (set.getTrainingData().size());
-        }
-        return error;
-    }
 }
