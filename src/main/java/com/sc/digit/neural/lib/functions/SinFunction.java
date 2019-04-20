@@ -11,14 +11,19 @@ import com.sc.digit.neural.lib.ActivationFunction;
  *
  * @author lucifer
  */
-public class StepFunction extends ActivationFunction {
+public class SinFunction extends ActivationFunction {
 
     @Override
     public void activate(double[] output) {
         int l = output.length;
         for (int i = 0; i < l; i++) {
-            output[i] = output[i] <= 0 ? 0 : 1;
+            output[i] = Math.sin(2.0 * output[i]);
         }
+    }
+
+    @Override
+    public double derivative(double b, double a) {
+        return Math.cos(2.0 * b);
     }
 
 }

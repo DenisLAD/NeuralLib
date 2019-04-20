@@ -11,19 +11,20 @@ import com.sc.digit.neural.lib.ActivationFunction;
  *
  * @author lucifer
  */
-public class ReLUFunction extends ActivationFunction {
+public class SteppedSigmoidFunction extends ActivationFunction {
 
     @Override
     public void activate(double[] output) {
         int l = output.length;
         for (int i = 0; i < l; i++) {
-            output[i] = Math.min(Math.max(output[i], 0), 1);
+            output[i] = 1.0 / (1.0 + Math.exp(-4.9 * output[i]));
         }
     }
 
     @Override
     public double derivative(double a, double b) {
-        return b < 0 ? 0 : 1.0;
+        double s = Math.exp(-4.9 * a);
+        return Math.pow(s * 4.9 / (1 + s), 2);
     }
 
 }

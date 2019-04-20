@@ -24,11 +24,7 @@ public class Segmentation {
 
     public static void main(String[] args) throws InterruptedException {
         Network net = new Network(2);
-//        net.addLayer(new Layer(10, ActivationFunction.SIGMOID));
-        net.addLayer(new Layer(10, ActivationFunction.SIGMOID));
-//        net.addLayer(new Layer(10, ActivationFunction.RELU));
-//        net.addLayer(new Layer(8, ActivationFunction.SIGMOID));
-//        net.addLayer(new Layer(8, ActivationFunction.SIGMOID));
+        net.addLayer(new Layer(32, ActivationFunction.SIGMOID));
         net.addLayer(new Layer(1, ActivationFunction.SIGMOID));
         net.build();
 
@@ -45,19 +41,19 @@ public class Segmentation {
         TrainingSet set = new TrainingSet();
 
         for (int i = 0; i < 10; i++) {
-            set.addTrainingData(new double[]{Math.random(), Math.random()}, new double[]{1.0});
+            set.addTrainingData(new double[]{Math.random() / 1.7, i / 10.0}, new double[]{1.0});
 //            set.addTrainingData(new double[]{Math.random(), Math.random()}, new double[]{0.5});
-            set.addTrainingData(new double[]{Math.random(), Math.random()}, new double[]{0.0});
+            set.addTrainingData(new double[]{1.0 - Math.random() / 1.7, i / 10.0 + 0.05}, new double[]{0.0});
         }
 
         int idx = 0;
 //        Thread.sleep(10000);
         while (true) {
-            double err = net.train(set, 0.01, 1000);
-            System.out.format("%.9f\n", err);
+            double err = net.train(set, 0.1, 1000);
+            System.out.format("%.14f\n", err);
             idx++;
 //            if (idx % 10 == 0) {
-                drawNet(ic, net, set);
+            drawNet(ic, net, set);
 //            }
         }
 
@@ -88,4 +84,3 @@ public class Segmentation {
         });
     }
 }
-

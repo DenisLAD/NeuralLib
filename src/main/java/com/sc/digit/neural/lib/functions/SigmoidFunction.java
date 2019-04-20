@@ -21,4 +21,9 @@ public class SigmoidFunction extends ActivationFunction {
         }
     }
 
+    @Override
+    public double derivative(double a, double b) {
+        return a * (1.0 - a);
+    }
+
 }

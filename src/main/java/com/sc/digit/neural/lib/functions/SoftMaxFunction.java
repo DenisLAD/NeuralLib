@@ -31,4 +31,9 @@ public class SoftMaxFunction extends ActivationFunction {
         }
     }
 
+    @Override
+    public double derivative(double a, double b) {
+        return 1;
+    }
+
 }

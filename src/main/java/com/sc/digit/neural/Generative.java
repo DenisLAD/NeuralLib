@@ -41,12 +41,12 @@ public class Generative {
         }
 
         Network net = new Network(10);
-        net.addLayer(new Layer(32, ActivationFunction.SIGMOID));
+        net.addLayer(new Layer(32, ActivationFunction.RELU));
 //        net.addLayer(new Layer(64, ActivationFunction.SIGMOID));
-//        net.addLayer(new Layer(64, ActivationFunction.RELU));
-        net.addLayer(new Layer(128, ActivationFunction.SIGMOID));
-        net.addLayer(new Layer(256, ActivationFunction.SIGMOID));
-        net.addLayer(new Layer(1024, ActivationFunction.SIGMOID));
+        net.addLayer(new Layer(64, ActivationFunction.RELU));
+//        net.addLayer(new Layer(128, ActivationFunction.RELU));
+//        net.addLayer(new Layer(256, ActivationFunction.RELU));
+        net.addLayer(new Layer(1024, ActivationFunction.RELU));
         net.build();
 
         JFrame frame = new JFrame();
@@ -70,7 +70,7 @@ public class Generative {
         frame.getContentPane().setLayout(fl);
 
         while (true) {
-            double err = net.train(set, 0.1, 1);
+            double err = net.train(set, 0.001, 1);
             gc.addData(err);
             for (int i = 0; i < 10; i++) {
                 drawNet(i, net, images[i]);

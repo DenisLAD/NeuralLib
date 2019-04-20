@@ -24,11 +24,10 @@ public class Network {
     public Network(int inputSize) {
         this.inputSize = inputSize;
     }
-    
+
 //    public Network clone() {
 //        
 //    }
-
     public void addLayer(Layer layer) {
         layers.add(layer);
     }
@@ -75,6 +74,8 @@ public class Network {
         }
     }
 
+    private double[] evalRet;
+
     public double[] evaluate(double[] data) {
         System.arraycopy(data, 0, layerDatas.get(0), 0, data.length);
 
@@ -86,8 +87,12 @@ public class Network {
             forward(input, output, w, layers.get(i).getFunc());
         }
 
-        int idx = layerDatas.size() - 1;
-        return Arrays.copyOf(layerDatas.get(idx), layerDatas.get(idx).length);
+        double[] ret = layerDatas.get(layerDatas.size() - 1);
+        if (evalRet == null) {
+            evalRet = new double[ret.length];
+        }
+        System.arraycopy(ret, 0, evalRet, 0, ret.length);
+        return evalRet;
     }
 
     public double train(double[] input, double[] ideal, double learningRate) {
@@ -96,7 +101,7 @@ public class Network {
         int idx = layerDatas.size() - 1;
         double[] output = layerDatas.get(idx);
         double[] error = errors.get(idx);
-        findOutError(error, output, ideal);
+        findOutError(error, output, ideal, layers.get(idx - 1).getFunc());
 
         for (int i = idx; i > 1; i--) {
             double[][] w = weights.get(i - 1);
@@ -104,7 +109,7 @@ public class Network {
             double[] ie = errors.get(i - 1);
             double[] in = layerDatas.get(i - 1);
 
-            findError(in, ie, oe, w);
+            findError(in, ie, oe, w, layers.get(i - 2).getFunc());
 
         }
 
@@ -121,9 +126,7 @@ public class Network {
             double d = (ideal[i] - output[i]);
             lr += d * d * 0.5;
         }
-
         return lr;
-
     }
 
     public double train(TrainingSet set, double learRate, int iterations) {
@@ -138,7 +141,7 @@ public class Network {
 
         return error;
     }
-    
+
     private void forward(double[] input, double[] output, double[][] weights, ActivationFunction func) {
         int i = input.length;
         int t = weights.length;
@@ -148,22 +151,21 @@ public class Network {
             for (int x = 0; x < i; x++) {
                 output[y] = output[y] + input[x] * weightRow[x];
             }
-//            output[y] = output[y] + weightRow[weightRow.length - 1];
         }
 
-        func.activateCheck(output);
+        func.activate(output);
     }
 
-    private void findOutError(double[] error, double[] output, double[] ideal) {
+    private void findOutError(double[] error, double[] output, double[] ideal, ActivationFunction func) {
         int s = ideal.length;
         for (int i = 0; i < s; i++) {
             double delta = ideal[i] - output[i];
-            error[i] = delta * output[i] * (1 - output[i]);
+            error[i] = delta * func.derivative(output[i], output[i]);//output[i] * (1 - output[i]);
         }
 
     }
 
-    private void findError(double[] in, double[] ie, double[] oe, double[][] w) {
+    private void findError(double[] in, double[] ie, double[] oe, double[][] w, ActivationFunction func) {
         int i = in.length - 1;
         int t = w.length;
 
@@ -172,7 +174,7 @@ public class Network {
             for (int y = 0; y < t; y++) {
                 ie[x] = (ie[x] + w[y][x] * oe[y]);
             }
-            ie[x] = ie[x] * in[x] * (1 - in[x]);
+            ie[x] = ie[x] * func.derivative(in[x], in[x]);//in[x] * (1 - in[x]);
         }
     }
 

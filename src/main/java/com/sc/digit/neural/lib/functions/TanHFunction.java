@@ -21,4 +21,9 @@ public class TanHFunction extends ActivationFunction {
         }
     }
 
+    @Override
+    public double derivative(double a, double b) {
+        return (1.0 - a) * a;
+    }
+
 }

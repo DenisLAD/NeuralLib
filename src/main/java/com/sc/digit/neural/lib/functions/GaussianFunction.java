@@ -11,19 +11,19 @@ import com.sc.digit.neural.lib.ActivationFunction;
  *
  * @author lucifer
  */
-public class ReLUFunction extends ActivationFunction {
+public class GaussianFunction extends ActivationFunction {
 
     @Override
     public void activate(double[] output) {
         int l = output.length;
         for (int i = 0; i < l; i++) {
-            output[i] = Math.min(Math.max(output[i], 0), 1);
+            output[i] = Math.exp(-Math.pow(2.5 * output[i], 2.0));
         }
     }
 
     @Override
-    public double derivative(double a, double b) {
-        return b < 0 ? 0 : 1.0;
+    public double derivative(double b, double a) {
+        return Math.exp(Math.pow(2.5 * b, 2.0) * 12.5 * b);
     }
 
 }
